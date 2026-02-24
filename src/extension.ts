@@ -1,22 +1,25 @@
 import * as vscode from 'vscode'
 
-// this method is called when vs code is activated
+// 此方法在 VS Code 激活时调用
 export function activate (context: vscode.ExtensionContext) {
   let nullDecoration: vscode.TextEditorDecorationType
   let activeEditor = vscode.window.activeTextEditor
 
   function createDecoration () {
+    // 如果已有装饰器，先释放
+    if (nullDecoration) {
+      nullDecoration.dispose()
+    }
     const configuration = vscode.workspace.getConfiguration('code-eol')
     const decorationColor = configuration.color
-    const fontSize = configuration.fontSize || 1
 
-    // Build CSS-like styles for the decoration
+    // 构建装饰器的 CSS 样式
     const styles: any = {}
     if (decorationColor) {
       styles.color = decorationColor
     }
 
-    // Create decoration with custom CSS through textDecoration
+    // 通过 textDecoration 创建装饰器
     nullDecoration = vscode.window.createTextEditorDecorationType(styles)
   }
 
@@ -26,7 +29,6 @@ export function activate (context: vscode.ExtensionContext) {
     }
     const configuration = vscode.workspace.getConfiguration('code-eol')
     const decorationColor = configuration.color
-    const fontSize = configuration.fontSize || 1
     const regEx = /(\r(?!\n))|(\r?\n)/g
     const text = activeEditor.document.getText()
     const newLines: vscode.DecorationOptions[] = []
@@ -36,16 +38,17 @@ export function activate (context: vscode.ExtensionContext) {
       const startPos = activeEditor.document.positionAt(match.index)
       const endPos = activeEditor.document.positionAt(match.index)
 
-      // Build after decoration options with custom styles
+      // 构建带有自定义样式的装饰选项
       const afterOptions: any = {
         contentText: decTxt
       }
       if (decorationColor) {
         afterOptions.color = decorationColor
       }
-      if (fontSize !== 1) {
-        // Use CSS-like styling through the style property
-        afterOptions.style = `font-size: ${fontSize}em;`
+      // 应用透明度
+      const opacity = configuration.opacity || 1
+      if (opacity !== 1) {
+        afterOptions.opacity = opacity.toString()
       }
 
       const decoration: vscode.DecorationOptions = {
@@ -59,7 +62,7 @@ export function activate (context: vscode.ExtensionContext) {
     activeEditor.setDecorations(nullDecoration, newLines)
   }
 
-  // Initial setup
+  // 初始化设置
   createDecoration()
   if (activeEditor) {
     updateDecorations()
@@ -85,7 +88,7 @@ export function activate (context: vscode.ExtensionContext) {
     context.subscriptions
   )
 
-  // Re-create decoration when configuration changes
+// 当配置更改时重新创建装饰器
   vscode.workspace.onDidChangeConfiguration((e) => {
     if (e.affectsConfiguration('code-eol')) {
       createDecoration()
@@ -94,11 +97,11 @@ export function activate (context: vscode.ExtensionContext) {
   }, null, context.subscriptions)
 }
 
-function getDecTxt (match, configuration) {
+function getDecTxt (match: string, configuration: vscode.WorkspaceConfiguration): string {
   const lfSymbol = configuration.lfSymbol || '↓'
   const crlfSymbol = configuration.crlfSymbol || '↵'
   const crSymbol = configuration.crSymbol || '←'
-  
+
   switch (match) {
     case '\n':
       return lfSymbol

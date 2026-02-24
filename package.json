@@ -1,67 +1,67 @@
 {
-	"name": "code-eol",
-	"displayName": "code-eol",
-	"description": "Display newline characters in your code",
-	"version": "0.3.4",
-	"publisher": "sohamkamani",
-	"repository": {
-		"url": "https://github.com/sohamkamani/code-eol"
-	},
-	"license": "MIT",
-	"engines": {
-		"vscode": "^1.75.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"*"
-	],
-	"main": "./out/extension",
-	"scripts": {
-		"vscode:prepublish": "pnpm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"package": "npx @vscode/vsce package"
-	},
-	"devDependencies": {
-		"@vscode/vsce": "^2.22.0",
-		"@types/node": "^20.0.0",
-		"typescript": "^5.0.0",
-		"vscode": "^1.1.37"
-	},
-	"contributes": {
-		"configuration": [{
-			"type": "object",
-			"title": "code-eol Configuration",
-			"properties": {
-				"code-eol.color": {
-					"type": ["string", "null"],
-					"default": null
-				},
-				"code-eol.fontSize": {
-					"type": "number",
-					"minimum": 0,
-					"maximum": 1,
-					"default": 1,
-					"description": "Font size scale factor (0-1) for the end-of-line symbols"
-				},
-				"code-eol.lfSymbol": {
-					"type": "string",
-					"default": "↓",
-					"description": "Symbol to display for LF (\\n) line endings"
-				},
-				"code-eol.crlfSymbol": {
-					"type": "string",
-					"default": "↵",
-					"description": "Symbol to display for CRLF (\\r\\n) line endings"
-				},
-				"code-eol.crSymbol": {
-					"type": "string",
-					"default": "←",
-					"description": "Symbol to display for CR (\\r) line endings"
-				}
-			}
-		}]
-	}
+  "name": "code-eol-extension",
+  "displayName": "Code EOL",
+  "description": "在代码中显示换行符",
+  "version": "1.0.2",
+  "publisher": "zhanghan",
+  "repository": {
+    "url": "https://github.com/ZhangHan93/code-eol"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension",
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "npx @vscode/vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.7.1",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vscode": "^1.1.37"
+  },
+  "contributes": {
+    "configuration": {
+      "title": "Code EOL",
+      "properties": {
+        "code-eol.color": {
+          "type": "string",
+          "format": "color",
+          "default": "#ffd86e",
+          "description": "行尾符显示颜色"
+        },
+        "code-eol.opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1,
+          "description": "行尾符透明度 (0-1)，0为完全透明，1为完全不透明"
+        },
+        "code-eol.lfSymbol": {
+          "type": "string",
+          "default": "↓",
+          "description": "LF (\\n) 换行符显示的符号"
+        },
+        "code-eol.crlfSymbol": {
+          "type": "string",
+          "default": "↵",
+          "description": "CRLF (\\r\\n) 换行符显示的符号"
+        },
+        "code-eol.crSymbol": {
+          "type": "string",
+          "default": "←",
+          "description": "CR (\\r) 换行符显示的符号"
+        }
+      }
+    }
+  }
 }
