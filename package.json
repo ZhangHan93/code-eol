@@ -2,14 +2,14 @@
 	"name": "code-eol",
 	"displayName": "code-eol",
 	"description": "Display newline characters in your code",
-	"version": "0.3.3",
+	"version": "0.3.4",
 	"publisher": "sohamkamani",
 	"repository": {
 		"url": "https://github.com/sohamkamani/code-eol"
 	},
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.15.0"
+		"vscode": "^1.75.0"
 	},
 	"categories": [
 		"Other"
@@ -19,18 +19,16 @@
 	],
 	"main": "./out/extension",
 	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "/Users/soham/go/src/github.com/sohamkamani/vscode-eol/node_modules/typescript/bin/tsc -p ./",
+		"vscode:prepublish": "pnpm run compile",
+		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install"
+		"package": "npx @vscode/vsce package"
 	},
 	"devDependencies": {
-		"vscode": "^1.1.5",
-		"typescript": "^2.5.3",
-		"@types/node": "7.0.4"
-	},
-	"dependencies": {
-		"vsce": "^1.36.2"
+		"@vscode/vsce": "^2.22.0",
+		"@types/node": "^20.0.0",
+		"typescript": "^5.0.0",
+		"vscode": "^1.1.37"
 	},
 	"contributes": {
 		"configuration": [{
@@ -40,6 +38,28 @@
 				"code-eol.color": {
 					"type": ["string", "null"],
 					"default": null
+				},
+				"code-eol.fontSize": {
+					"type": "number",
+					"minimum": 0,
+					"maximum": 1,
+					"default": 1,
+					"description": "Font size scale factor (0-1) for the end-of-line symbols"
+				},
+				"code-eol.lfSymbol": {
+					"type": "string",
+					"default": "↓",
+					"description": "Symbol to display for LF (\\n) line endings"
+				},
+				"code-eol.crlfSymbol": {
+					"type": "string",
+					"default": "↵",
+					"description": "Symbol to display for CRLF (\\r\\n) line endings"
+				},
+				"code-eol.crSymbol": {
+					"type": "string",
+					"default": "←",
+					"description": "Symbol to display for CR (\\r) line endings"
 				}
 			}
 		}]
